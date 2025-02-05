@@ -1,9 +1,27 @@
 .users-card{
     display: flex;
-    width: 1320px;
     flex-wrap: wrap;
     justify-content: center;
     margin: 0 auto;
     gap: 10px;
     margin-top: 20px;
+}
+
+.users-list{
+    width: 1320px;
+    justify-content: center;
+    margin: 0 auto;
+
+}
+
+.create-user-btn{
+    margin-top: 25px;
+    background: white;
+    border: 1px solid #F0BA4E;
+    border-radius: 54px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    align-self: center
 }

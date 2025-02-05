@@ -35,6 +35,7 @@ export class UsersService {
             this.usersSubject$.next([...this.usersSubject$.value, user]);
             alert('Новый пользователь успешно добавлен')
         }
+        console.log(user)
     }
 
 
@@ -45,6 +46,7 @@ export class UsersService {
               }
             )
         )
+        console.log(id)
       }
       
 }

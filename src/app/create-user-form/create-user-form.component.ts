@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Output } from "@angular/core";
+import { Component, EventEmitter, inject, Output } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog'
 
 @Component({
     selector: 'app-create-user-form',
@@ -14,13 +15,14 @@ import {MatIconModule} from '@angular/material/icon';
         MatButtonModule, 
         MatInputModule, 
         MatFormFieldModule,
-        MatIconModule]
+        MatIconModule,
+        MatDialogModule]
 })
 
 
 export class CreateUserFormComponent {
-    @Output()
-    createUser = new EventEmitter();
+
+    readonly dialogRef = inject(MatDialogRef<CreateUserFormComponent>);
 
 
     public form = new FormGroup({
@@ -29,13 +31,13 @@ export class CreateUserFormComponent {
         email: new FormControl('', { validators: [Validators.required, Validators.email]}),
         website: new FormControl('', { validators: [Validators.required]}),
         company: new FormGroup({
-            name: new FormControl('', { validators: [Validators.required]}),
+            name: new FormControl('', Validators.required),
         })
     });
   
 
     public submitForm(): void {
-        this.createUser.emit(this.form.value);
+        this.dialogRef.close(this.form.value);
         this.form.reset();
     };
 }

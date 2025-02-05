@@ -1,28 +1,27 @@
 .user-form{
-    width: 300px;
+    max-width: 700px;
+    display: flex;
     justify-content: center;
+    flex-direction: column;
     margin: 0 auto;
     padding: 35px;
 }
 
 .user-form-cards{
     display: flex;
-    flex-direction: column;
+    justify-content: center;
 }
 
 .create-form-button{
-    width: 300px;
+    width: 215px;
 }
 
 .form-input{
-    width: 100px;
-}
+    width: 200px;
 
+}
 .title{
     font-size: 20px;
     font-weight: 400;
-}
-
-.input-form{
-    width: 300px;
+    margin-bottom: 25px;
 }

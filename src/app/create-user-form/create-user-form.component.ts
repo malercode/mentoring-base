@@ -39,5 +39,5 @@ export class CreateUserFormComponent {
     public submitForm(): void {
         this.dialogRef.close(this.form.value);
         this.form.reset();
-    };
+    }
 }

@@ -1,25 +1,16 @@
-import { inject, Injectable } from "@angular/core";
+import {  Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { User } from "./users-list/users-list.component";
-import { MatSnackBar } from "@angular/material/snack-bar";
+
 
 @Injectable({providedIn: 'root'})
 export class UsersService {
     private usersSubject$ = new BehaviorSubject<User[]>([]);
     users$ = this.usersSubject$.asObservable();
-    private _snackBar = inject(MatSnackBar);
-    
-    durationInSeconds = 5;
 
     setUsers(users: User[]) {
         this.usersSubject$.next(users);
     }
-
-    openSnackBar(message: string) {
-        this._snackBar.open(message, 'OK', {
-          duration: this.durationInSeconds * 1000,
-        });
-      }
 
     
     editUser(editedUser: User) {
@@ -31,33 +22,28 @@ export class UsersService {
                 }
             )   
         );
-        this.openSnackBar('Пользователь успешно отредактирован!');
-
     }
 
 
     createUser(user: User){
-        const userIsExiting = this.usersSubject$.value.find(
-            (currentElement) => currentElement.email === user.email
-        );
-        
-        if (userIsExiting !== undefined) {
-            this.openSnackBar('Такой пользователь уже зарегестрирован!');
-        } else {
-            this.usersSubject$.next([...this.usersSubject$.value, user]);
-            this.openSnackBar('Пользователь успешно добавлен!');
-        }
+        const currentUsers = this.usersSubject$.value;
+        console.log('Текущие пользователи до добавления:', currentUsers);
+    
+        const updatedUsers = [...currentUsers, user];
+        this.usersSubject$.next(updatedUsers);
+    
+        console.log('Добавлен пользователь:', user);
+        console.log('Обновленный список пользователей:', updatedUsers);
     }
 
 
     deleteUser(id: number) {
-        this.usersSubject$.next(
-            this.usersSubject$.value.filter(user => {
-                return user.id !== id;
-              }
-            )
-        );
-        this.openSnackBar('Пользователь успешно удален!');
+    const currentUsers = this.usersSubject$.value;
+    const updatedUsers = currentUsers.filter(user => user.id !== id);
+
+    this.usersSubject$.next(updatedUsers);
+    console.log('Удален пользователь с ID:', id);
+    console.log('Обновленный список пользователей:', updatedUsers);
       }
       
 }

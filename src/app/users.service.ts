@@ -1,15 +1,25 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { User } from "./users-list/users-list.component";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Injectable({providedIn: 'root'})
 export class UsersService {
     private usersSubject$ = new BehaviorSubject<User[]>([]);
     users$ = this.usersSubject$.asObservable();
+    private _snackBar = inject(MatSnackBar);
+    
+    durationInSeconds = 5;
 
     setUsers(users: User[]) {
         this.usersSubject$.next(users);
     }
+
+    openSnackBar(message: string) {
+        this._snackBar.open(message, 'OK', {
+          duration: this.durationInSeconds * 1000,
+        });
+      }
 
     
     editUser(editedUser: User) {
@@ -20,7 +30,9 @@ export class UsersService {
 
                 }
             )   
-        )
+        );
+        this.openSnackBar('Пользователь успешно отредактирован!');
+
     }
 
 
@@ -30,12 +42,11 @@ export class UsersService {
         );
         
         if (userIsExiting !== undefined) {
-            alert('Такой пользователь уже зарегестрирован');
+            this.openSnackBar('Такой пользователь уже зарегестрирован!');
         } else {
             this.usersSubject$.next([...this.usersSubject$.value, user]);
-            alert('Новый пользователь успешно добавлен')
+            this.openSnackBar('Пользователь успешно добавлен!');
         }
-        console.log(user)
     }
 
 
@@ -45,8 +56,8 @@ export class UsersService {
                 return user.id !== id;
               }
             )
-        )
-        console.log(id)
+        );
+        this.openSnackBar('Пользователь успешно удален!');
       }
       
 }

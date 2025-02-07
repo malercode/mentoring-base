@@ -38,9 +38,8 @@ export interface User {
     imports: [NgFor, UserCardComponent, AsyncPipe, CreateUserFormComponent, MatDialogModule, ReactiveFormsModule],
     templateUrl: './users-list.component.html',
     styleUrls: ['./users-list.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [MatDialog]
-
+    changeDetection: ChangeDetectionStrategy.OnPush
+    
 })
 
 
@@ -52,10 +51,10 @@ export class UsersListComponent{
     createUserEvent = new EventEmitter<User>();
 
 
-
   readonly usersApiServise = inject(UsersApiService);
   readonly usersService = inject(UsersService);
   readonly dialog = inject(MatDialog);
+  
 
     constructor() {
         this.usersApiServise.getUsers().subscribe(

@@ -17,6 +17,5 @@ export class DeleteDialogComponent {
 
     submit(): void{
         this.dialogRef.close(this.data.id);
-        console.log(this.data.id)
     }
 }

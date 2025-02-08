@@ -66,25 +66,23 @@ export class UsersListComponent{
 
 
     public createUser(formData: User) {
-      this.usersService.users$.subscribe((currentUsers: User[]) => {
-        const existingUser = currentUsers.find(
-            (currentElement: { email: string; }) => currentElement.email === formData.email
-        );
+    const currentUsers: User[] = this.usersService.getUsers();
+    const existingUser: User | undefined = currentUsers.find(
+        (currentElement: User) => currentElement.email === formData.email
+    );
 
-        if (existingUser !== undefined) {
-            this.openSnackBar("Пользователь с таким email уже существует");
-        } else {
-            this.usersService.createUser(formData);
-            this.openSnackBar("Пользователь успешно добавлен!");
-        }
-    });
+    if (existingUser !== undefined) {
+        this.openSnackBar("Пользователь с таким email уже существует");
+    } else {
+        this.usersService.createUser(formData);
+        this.openSnackBar("Пользователь успешно добавлен!");
+    };
   }
     
 
     deleteUser(id: number) {
       this.usersService.deleteUser(id);
       this.openSnackBar("Пользователь успешно удален!");
-      console.log(id)
 
     }
 

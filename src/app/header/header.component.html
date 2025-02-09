@@ -7,6 +7,7 @@
           <div class="header-nav-main">
             <nav class="header-nav" *ngFor="let item of menuItems">{{ item }}</nav>
             <button (click)="changeMenuText()">Изменить текст</button>
+            <span class="date">{{ currentDate | customDate:'medium' }}</span>
           </div> 
       </div>
       <div class="header-container-grey-main-right">
@@ -22,9 +23,9 @@
           <div class="icon-heart">
             <img src="/assets/favorites.svg" alt="избранное">
           </div>
-          <button class="cart-button">
+          <button class="cart-button" appHoverColor>
             <div class="cart-icon">
-              <img src="assets/backet.svg" alt="корзина">
+              <img src="assets/backet.svg" alt="корзина" >
             </div>
             <span class="cart-text">Пусто</span>
           </button>

@@ -7,6 +7,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatDialogModule } from '@angular/material/dialog';
 import { User } from "../users-list.component";
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     selector: 'app-edid-user-dialog',
@@ -19,7 +20,8 @@ import { User } from "../users-list.component";
         MatInputModule,
         MatFormFieldModule,
         MatIconModule,
-        MatDialogModule
+        MatDialogModule,
+        MatTooltipModule
     ]
 })
 

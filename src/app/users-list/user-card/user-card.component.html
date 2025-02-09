@@ -1,8 +1,15 @@
-<div class="user-card">
+<div class="user-card" appHoverShadow>
     <p>{{ user.name }}</p>
     <p>{{ user.email }}</p>
+    <p>{{ user.phone | removeDashes }}</p>
     <p>{{ user.website }}</p>
     <p>{{ user.company.name }}</p>
-    <button (click)=openDeleteDialog() class="delete-user-btn">Удалить юзера</button>
-    <button (click)=openDialog() class="edit-user-btn">Редактировать юзера</button>
+    <button (click)=openDeleteDialog() class="delete-user-btn" matIconSuffix mat-raised-button appHoverColor>
+        Удалить юзера
+        <mat-icon>delete</mat-icon>
+    </button>
+    <button (click)=openDialog()  class="edit-user-btn"  amatIconSuffix mat-raised-button appHoverColor>
+        Редактировать юзера
+        <mat-icon>edit</mat-icon>
+    </button>
 </div>

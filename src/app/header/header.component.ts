@@ -1,15 +1,21 @@
 import { Component } from '@angular/core';
 import { NgFor } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { CustomDatePipe } from '../pipes/custom-date.pipe';
+import { HoverColorDirective } from '../directives/hover-color.directive';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [NgFor, RouterLink],
+  imports: [NgFor, RouterLink, CustomDatePipe, HoverColorDirective],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrl: './header.component.scss',
+
 })
 export class HeaderComponent {
+
+  currentDate: Date = new Date();
+
   title = 'mentoring-first-project';
 
   readonly headerItem1 ="Главная"

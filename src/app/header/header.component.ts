@@ -1,20 +1,26 @@
-import { Component } from '@angular/core';
-import { NgFor } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { CustomDatePipe } from '../pipes/custom-date.pipe';
 import { HoverColorDirective } from '../directives/hover-color.directive';
+import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthComponent } from '../auth/auth.component';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [NgFor, RouterLink, CustomDatePipe, HoverColorDirective],
+  imports: [NgFor, RouterLink, HoverColorDirective,CommonModule, NgIf],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 
 })
 export class HeaderComponent {
 
-  currentDate: Date = new Date();
+  private readonly dialog = inject(MatDialog);
+  public readonly userService = inject(UserService);
+
+  today: Date = new Date();
 
   title = 'mentoring-first-project';
 
@@ -44,6 +50,30 @@ export class HeaderComponent {
     this.isUpperCase = !this.isUpperCase;
   }
 
+
+  public openDialog(): void {
+    const dialogRef = this.dialog.open(AuthComponent, {
+      width: "300px",
+      height: "150px"
+    });
+
+    dialogRef.afterClosed().subscribe((result: string) => {
+      if (result === 'admin') {
+        this.userService.loginAsAdmin()
+      } else if (result === 'user') {
+        this.userService.loginAsUser()
+      } else return undefined;
+    });
+
+}
+
+
+public logout() {
+  if(confirm('Вы точно хотите выйти?')) {
+    return this.userService.logout()
+  }
+   else return false;
+ }
 }
 
 function getMenuName(name: string): string {

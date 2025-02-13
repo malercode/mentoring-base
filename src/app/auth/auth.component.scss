@@ -1,0 +1,19 @@
+.dialog-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.buttons{
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.button{
+    width: 200px;
+}
+
+.title{
+    margin: 10px;
+}

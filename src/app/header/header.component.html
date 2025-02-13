@@ -7,7 +7,7 @@
           <div class="header-nav-main">
             <nav class="header-nav" *ngFor="let item of menuItems">{{ item }}</nav>
             <button (click)="changeMenuText()">Изменить текст</button>
-            <span class="date">{{ currentDate | customDate:'medium' }}</span>
+            <span class="date">{{ today | date:'medium' }}</span>
           </div> 
       </div>
       <div class="header-container-grey-main-right">
@@ -30,6 +30,9 @@
             <span class="cart-text">Пусто</span>
           </button>
         </div>
+        <button (click)="openDialog()" *ngIf="(userService.user$ | async) === null">Войти</button>
+        <button (click)="logout()" *ngIf="(userService.user$ | async) !== null">Выйти</button>
+
       </div>
     </div>
   </div>
@@ -46,6 +49,7 @@
           <div class="header2-nav-item">Электрика</div>
           <div class="header2-nav-item">Интерьер и одежда</div>
           <button class="users-button" routerLink="users">Пользователи</button>
+          <button class="admin-button" routerLink="admin">Админ</button>
         </div>
       </div>
       <div class="header-container-yellow-right">

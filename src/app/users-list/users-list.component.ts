@@ -1,12 +1,14 @@
 import { AsyncPipe, NgFor } from "@angular/common";
-import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from "@angular/core";
 import { UsersApiService } from "../users-api.service";
 import { UserCardComponent } from "./user-card/user-card.component";
-import { UsersService } from "../users.service";
 import { CreateUserFormComponent } from "../create-user-form/create-user-form.component";
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { Store } from "@ngrx/store";
+import { UsersActions } from "./store/users.actions";
+import { selectUsers } from "./store/users.selectors";
 
 
 export interface User {
@@ -44,50 +46,54 @@ export interface User {
 })
 
 
-export class UsersListComponent{
+export class UsersListComponent implements OnInit{
   @Input()
     user!: User;
 
 
   readonly usersApiServise = inject(UsersApiService);
-  readonly usersService = inject(UsersService);
   readonly dialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
+  private readonly store = inject(Store);
+  public readonly users$ = this.store.select(selectUsers);
             
   durationInSeconds = 5;
   
 
-    constructor() {
-        this.usersApiServise.getUsers().subscribe(
-          (response: User[]) => {
-                this.usersService.setUsers(response)
-            });
-    }
+  constructor() {}
+
+  ngOnInit(): void {
+      this.store.dispatch(UsersActions.loadUsers());
+  }
 
 
     public createUser(formData: User) {
-    const currentUsers: User[] = this.usersService.getUsers();
-    const existingUser: User | undefined = currentUsers.find(
-        (currentElement: User) => currentElement.email === formData.email
-    );
-
-    if (existingUser !== undefined) {
-        this.openSnackBar("Пользователь с таким email уже существует");
-    } else {
-        this.usersService.createUser(formData);
-        this.openSnackBar("Пользователь успешно добавлен!");
-    };
+      const currentUsers$ = this.store.select(selectUsers);
+      currentUsers$.subscribe((currentUsers: User[]) => {
+          const existingUser: User | undefined = currentUsers.find(
+              (currentElement: User) => currentElement.email === formData.email
+          );
+  
+          if (existingUser) {
+              this.openSnackBar("Пользователь с таким email уже существует");
+          } else {
+              this.store.dispatch(
+                  UsersActions.create({ user: formData })
+              );
+              this.openSnackBar("Пользователь успешно добавлен!");
+          }
+      });
   }
     
 
     deleteUser(id: number) {
-      this.usersService.deleteUser(id);
+      this.store.dispatch(UsersActions.delete({ id }))
       this.openSnackBar("Пользователь успешно удален!");
 
     }
 
     editUser(user: User){
-      this.usersService.editUser(user);
+      this.store.dispatch(UsersActions.edit({ user }))
       this.openSnackBar("Пользователь успешно отредактирован!");
     }
 

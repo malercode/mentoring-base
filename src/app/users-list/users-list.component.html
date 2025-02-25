@@ -1,7 +1,7 @@
 <div class="users-list">
   <button class="create-user-btn" (click)="openCreateUserForm()" >Создать пользователя</button>
   <div class="users-card">
-      <div *ngFor="let user of usersService.users$ | async" class="">
+      <div *ngFor="let user of users$ | async" class="">
         <app-user-card 
         [user]="user" 
         (deleteUser)="deleteUser($event)"

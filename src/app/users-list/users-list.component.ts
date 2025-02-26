@@ -9,6 +9,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { Store } from "@ngrx/store";
 import { UsersActions } from "./store/users.actions";
 import { selectUsers } from "./store/users.selectors";
+import { take } from "rxjs";
 
 
 export interface User {
@@ -67,23 +68,17 @@ export class UsersListComponent implements OnInit{
   }
 
 
-    public createUser(formData: User) {
-      const currentUsers$ = this.store.select(selectUsers);
-      currentUsers$.subscribe((currentUsers: User[]) => {
-          const existingUser: User | undefined = currentUsers.find(
-              (currentElement: User) => currentElement.email === formData.email
-          );
-  
-          if (existingUser) {
-              this.openSnackBar("Пользователь с таким email уже существует");
-          } else {
-              this.store.dispatch(
-                  UsersActions.create({ user: formData })
-              );
-              this.openSnackBar("Пользователь успешно добавлен!");
-          }
-      });
-  }
+  public createUser(formData: User) {
+    this.users$.pipe(take(1)).subscribe((currentUsers: User[]) => {
+        const existingUser = currentUsers.find(user => user.email === formData.email);
+        if (existingUser) {
+            this.openSnackBar("Пользователь с таким email уже существует");
+        } else {
+            this.store.dispatch(UsersActions.create({ user: formData }));
+            this.openSnackBar("Пользователь успешно добавлен!");
+        }
+    });
+}
     
 
     deleteUser(id: number) {
